@@ -17,13 +17,13 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
-enum SortField {
+enum SortType {
   name = 'name',
   length = 'length',
 }
 
 interface FillterParams {
-  field: SortField | '';
+  field: SortType | '';
   isReverse: boolean;
 }
 
@@ -33,9 +33,9 @@ const prepareGoods = (goods: string[], { field, isReverse }: FillterParams) => {
   if (field) {
     preparedGoods.sort((good1, good2) => {
       switch (field) {
-        case SortField.name:
+        case SortType.name:
           return good1.localeCompare(good2);
-        case SortField.length:
+        case SortType.length:
           return good1.length - good2.length;
         default:
           return 0;
@@ -48,7 +48,7 @@ const prepareGoods = (goods: string[], { field, isReverse }: FillterParams) => {
 
 export const App: React.FC = () => {
   const [reverse, setReverse] = useState(false);
-  const [sortField, setSortField] = useState<SortField | ''>('');
+  const [sortField, setSortField] = useState<SortType | ''>('');
   const showGoods = prepareGoods(goodsFromServer, {
     field: sortField,
     isReverse: reverse,
@@ -65,9 +65,9 @@ export const App: React.FC = () => {
         <button
           type="button"
           className={cn('button is-info', {
-            'is-light': sortField !== SortField.name,
+            'is-light': sortField !== SortType.name,
           })}
-          onClick={() => setSortField(SortField.name)}
+          onClick={() => setSortField(SortType.name)}
         >
           Sort alphabetically
         </button>
@@ -75,9 +75,9 @@ export const App: React.FC = () => {
         <button
           type="button"
           className={cn('button is-success', {
-            'is-light': sortField !== SortField.length,
+            'is-light': sortField !== SortType.length,
           })}
-          onClick={() => setSortField(SortField.length)}
+          onClick={() => setSortField(SortType.length)}
         >
           Sort by length
         </button>
